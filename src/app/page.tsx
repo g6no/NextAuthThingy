@@ -1,48 +1,81 @@
 'use client';
-import 'tailwindcss/tailwind.css';
-
 import { signOut, useSession } from 'next-auth/react';
+import { redirect } from 'next/navigation';
 
 // export default function Home() {
-//   const session = useSession();
-
+//   const session = useSession({
+//     required: true,
+//     onUnauthenticated() {
+//       redirect('/signin');
+//     },
+//   });
 //   return (
-    // <div className="min-h-screen flex items-center justify-center bg-gray-100">
-    //   <div className="bg-white p-8 rounded shadow-md">
-    //     <h1 className="text-2xl font-semibold mb-4">
-    //       Welcome, {session?.data?.user?.name }
-    //     </h1>
-    //     <button
-    //       className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-    //       onClick={() => signOut()}
-    //     >
-    //       Logout
-    //     </button>
-    //   </div>
-    // </div>
-//   );
+//     <div className="p-8">
+//       <div className='text-white'>{session?.data?.user?.email }</div>
+//       <button className='text-white' onClick={() => signOut()}>Logout</button>
+//     </div>
+//   )
 // }
+
+// Home.requireAuth = true
 
 export default function Home() {
   const session = useSession();
+
+  const handleSignOut = async () => {
+    signOut();
+    redirect('/signin');
+  };
+
   return (
-    <>
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded shadow-md">
         <h1 className="text-2xl text-black font-semibold mb-4">
-          Welcome, {session?.data?.user?.name }
+          Welcome, {session?.data?.user?.name ? session?.data?.user?.name : session?.data?.user?.email }
         </h1>
         <button
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-          onClick={() => signOut()}
+          onClick={() =>signOut()}
         >
           Logout
         </button>
       </div>
     </div>
-    </>
-  )
+  );
 }
+
+// export default function Home() {
+//   const session = useSession(
+//     {
+//       required: true,
+//       onUnauthenticated() {
+//         return {
+//           redirect: {
+//             destination: '/Login',
+//             permanent: false,
+//           },
+//         };
+//       },
+//     }
+//   );
+//   return (
+//     <>
+//     <div className="min-h-screen flex items-center justify-center bg-gray-100">
+//       <div className="bg-white p-8 rounded shadow-md">
+//         <h1 className="text-2xl text-black font-semibold mb-4">
+//           Welcome, {session?.data?.user?.name }
+//         </h1>
+//         <button
+//           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+//           onClick={() => signOut()}
+//         >
+//           Logout
+//         </button>
+//       </div>
+//     </div>
+//     </>
+//   )
+// }
 
 
 
